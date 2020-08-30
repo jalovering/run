@@ -21,6 +21,7 @@ delete keysDown[key.keyCode];
 }, false);
 
 const WORLD_SHIFT = 0.5
+const FPS = 25
 
 // create player
 const player = {
@@ -70,15 +71,7 @@ const player = {
         const wall_bottom = wall.y + wall.height
         const wall_left = wall.x
         const wall_right = wall.x + wall.width
-        
-        console.log("y: ", this.y)
-        console.log("dy: ", this.dy)
-
-        console.log("top: ", top)
-        console.log("next_top: ", next_top)
-        console.log("bottom: ", bottom, next_bottom)
-        console.log("wall y: ", wall.y)
-        
+   
         if ((next_right >= wall_left) 
         && (right <= wall_left)
         && ((bottom >= wall_top) || next_bottom >= wall_top)
@@ -260,24 +253,31 @@ function reset() {
 }
 // restart
 function restart() {
-    const ground1 = new Block(100, 250, 300, 2, "blue")
-    const ground2 = new Block(300, 220, 40, 2, "blue")
-    const ground3 = new Block(250, 180, 20, 2, "blue")
-    const ground4 = new Block(300, 140, 40, 2, "blue")
-    const ground5 = new Block(360, 100, 20, 2, "blue")
-    const ground6 = new Block(520, 180, 60, 2, "blue")
-    const ground7 = new Block(520, 340, 20, 2, "blue")
-    const ground8 = new Block(620, 350, 40, 2, "blue")
+    const g1 = new Block(100, 250, 300, 2, "blue")
+    const g2 = new Block(300, 220, 40, 2, "blue")
+    const g3 = new Block(250, 180, 20, 2, "blue")
+    const g4 = new Block(300, 140, 40, 2, "blue")
+    const g5 = new Block(360, 100, 20, 2, "blue")
+    const g6 = new Block(520, 180, 60, 2, "blue")
+    const g7 = new Block(520, 350, 20, 2, "blue")
+    const g8 = new Block(620, 370, 40, 2, "blue")
+    const g9 = new Block(700, 330, 10, 2, "blue")
+    const g10 = new Block(640, 290, 10, 2, "blue")
+    const g11 = new Block(700, 250, 10, 2, "blue")
+    const g12 = new Block(640, 210, 10, 2, "blue")
+    const g13 = new Block(700, 170, 10, 2, "blue")
+    const g14 = new Block(640, 130, 10, 2, "blue")
 
-    const danger1 = new Block(450, 250, 60, 150, "red")
+    const d1 = new Block(450, 250, 60, 150, "red")
 
-    const wall1 = new Block(610, 110, 2, 160, "black")
+    const w1 = new Block(610, 120, 2, 170, "black")
     // const wall2 = new Block(200, 100, 50, 120, "black")
 
 
-    const grounds = [ground1, ground2, ground3, ground4, ground5, ground6, ground7, ground8]
-    const dangers = [danger1]
-    const walls = [wall1]
+    const grounds = [g1, g2, g3, g4, g5, g6, g7, g8, g9, g10, g11, g12, 
+        g13, g14]
+    const dangers = [d1]
+    const walls = [w1]
     player.start()
     main(grounds, dangers, walls)
     // return grounds, dangers
@@ -292,6 +292,7 @@ function viewShift(player, grounds, dangers, walls) {
     dangers.map(danger => shift(danger))
     walls.map(wall => shift(wall))
 }
+
 // The main game loop
 function main(grounds, dangers, walls) {
     reset()
@@ -305,6 +306,7 @@ function main(grounds, dangers, walls) {
     player.draw()
 
     requestAnimationFrame(() => main(grounds, dangers, walls))
+    // animate()
     
 }
 
