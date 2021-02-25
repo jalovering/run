@@ -21,7 +21,12 @@ delete keysDown[key.keyCode];
 }, false);
 
 const WORLD_SHIFT = 0.5
-const FPS = 25
+const FPS = 15
+// const FPS = 25
+var stop = false
+var frameCount = 0
+// var $results = $("#results");
+var fpsInterval, startTime, now, then, elapsed
 
 // create player
 const player = {
@@ -279,8 +284,11 @@ function restart() {
     const dangers = [d1]
     const walls = [w1]
     player.start()
+    console.log(grounds)
+    console.log(dangers)
+    console.log(walls)
     main(grounds, dangers, walls)
-    // return grounds, dangers
+    return grounds, dangers, walls
 }
 // shift all items -1 x
 function viewShift(player, grounds, dangers, walls) {
@@ -293,24 +301,60 @@ function viewShift(player, grounds, dangers, walls) {
     walls.map(wall => shift(wall))
 }
 
-// The main game loop
+function startAnimating(fps, grounds, dangers, walls) {
+    fpsInterval = 1000 / fps;
+    then = Date.now();
+    startTime = then;
+    animate(grounds, dangers, walls);
+}
+
+function animate(grounds, dangers, walls) {
+
+    // requestAnimationFrame(animate(grounds, dangers, walls))
+    requestAnimationFrame(() => animate(grounds, dangers, walls))
+
+    
+    now = Date.now()
+    elapsed = (now - then)
+    console.log("now", now)
+    console.log("then", then)
+    console.log(now - then)
+    console.log("elapsed", elapsed)
+    console.log("interval", fpsInterval)
+    if (elapsed > fpsInterval) {
+        console.log("IF")
+        then = now = (elapsed % fpsInterval)
+        // requestAnimationFrame(() => main(grounds, dangers, walls))
+        
+        player.draw()
+        drawBoard(grounds, dangers, walls)
+    }
+    // reset()
+    main(grounds, dangers, walls)
+}
+function animation(grounds, dangers, walls) {
+    player.draw()
+    drawBoard(grounds, dangers, walls)
+}
+
 function main(grounds, dangers, walls) {
     reset()
     viewShift(player, grounds, dangers, walls)
-
-    drawBoard(grounds, dangers, walls)
     const do_restart = player.update(grounds, dangers, walls)
     if (do_restart) {
         return restart()
     }
-    player.draw()
 
+    player.draw()
+    drawBoard(grounds, dangers, walls)
     requestAnimationFrame(() => main(grounds, dangers, walls))
-    // animate()
+    // startAnimating(15, grounds, dangers, walls)
+    // animate(grounds, dangers, walls)
     
 }
 
 restart()
+// startAnimating(15, grounds, dangers, walls)
 // var w = window;
 // requestAnimationFrame = w.requestAnimationFrame || 
 // w.webkitRequestAnimationFrame || w.msRequestAnimationFrame || 
